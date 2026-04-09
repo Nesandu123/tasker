@@ -28,6 +28,8 @@ app.use("/api/categories", categoryRoutes);
 
 const authRoutes = require("./routes/authRoutes");
 
+app.use("/uploads", express.static("uploads")); //serve images
+
 app.use("/api/auth", authRoutes);
 
 const serviceRoutes = require("./routes/serviceRoutes");

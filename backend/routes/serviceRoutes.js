@@ -62,15 +62,23 @@ router.get("/", async (req, res) => {
   res.json(services);
 });
 
-// POST: only admin
-router.post("/", verifyAdmin, async (req, res) => {
+const upload = require("../middleware/upload");
+
+// POST (Admin only)
+router.post("/", verifyAdmin, upload.single("image"), async (req, res) => {
   const { name, description } = req.body;
-  const service = new Service({ name, description });
+
+  const service = new Service({
+    name,
+    description,
+    image: req.file ? req.file.filename : "",
+  });
+
   await service.save();
   res.json(service);
 });
-
 // PUT: only admin
+
 router.put("/:id", verifyAdmin, async (req, res) => {
   const { name, description } = req.body;
   const service = await Service.findByIdAndUpdate(
